@@ -14,3 +14,4 @@ soupsieve==2.3.1
 tomli==1.2.2
 typing-extensions==3.10.0.2
 urllib3==1.26.7
+selenium~=4.0.0
