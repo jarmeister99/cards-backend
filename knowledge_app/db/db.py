@@ -10,6 +10,7 @@ try:
         f"mongodb+srv://{DB_USER}:{DB_PASS}@{DB_URI}/sharedb?retryWrites=true&w=majority"
     )
     client.admin.command('ismaster')
+    db = client['sharedb']
 except (OperationFailure, ConfigurationError) as e:
     # replace with logging function
     print(e)

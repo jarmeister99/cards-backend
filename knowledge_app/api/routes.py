@@ -1,11 +1,18 @@
 from flask import current_app as app
-import json
+
+from bson import json_util
+
+from knowledge_app.db.models.Share import Share
 
 
 @app.route("/api/shares/", methods=["GET"])
 def get_shares():
-    dummy_shares = [{"title": "hello world!"}, {"title": "test post please ignore!"}]
+    """
+    Return a JSON response containing all shares queried from the database
+    """
+
+    shares = Share.get_all()
     response = app.response_class(
-        response=json.dumps(dummy_shares), mimetype="application/json"
+        response=json_util.dumps(shares), mimetype="application/json", status=200
     )
     return response
