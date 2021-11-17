@@ -1,4 +1,4 @@
-from flask import current_app as app
+from flask import current_app as app, request
 
 from bson import json_util
 
@@ -16,3 +16,33 @@ def get_shares():
         response=json_util.dumps(shares), mimetype="application/json", status=200
     )
     return response
+
+
+@app.route("/api/shares", methods=["POST"])
+def create_share():
+    """
+    Add the given share to the database and return the created share
+    """
+    request_body = request.get_json()
+
+    # parse body
+    share_object = {}
+    required_fields = ['title', 'teaser', 'content', 'link']
+    optional_fields = ['imgLink']
+
+    # ensure we have all required fields
+    for field in required_fields:
+        if not request_body.get(field):
+            # error if missing any
+            return {'error': f'request missing \'{field}\''}, 400
+        # save required field to object
+        share_object[field] = request_body.get(field)
+
+    # save all optional fields to object
+    for field in optional_fields:
+        if request_body.get(field):
+            share_object[field] = request_body.get(field)
+        else:
+            share_object[field] = ''
+
+    return share_object, 200
