@@ -14,7 +14,7 @@ def create_app() -> Flask:
 
     # load middleware
     # CORS(app, resources={r"/api/*": {"origins": "*"}})
-    CORS(app, resources={r"/*": {"origins": "*"}})
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     # load dotenv in base root
     app_root = os.path.dirname(__file__)  # refers to application_top
