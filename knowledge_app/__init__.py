@@ -7,4 +7,8 @@ def create_app() -> Flask:
     :return: A Flask instance
     """
     app = Flask(__name__)
+
+    # import routes to register them
+    with app.app_context():
+        import knowledge_app.api.routes
     return app
