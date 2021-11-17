@@ -1,4 +1,7 @@
 from flask import Flask
+from dotenv import load_dotenv
+
+import os
 
 
 def create_app() -> Flask:
@@ -8,7 +11,13 @@ def create_app() -> Flask:
     """
     app = Flask(__name__)
 
+    # load dotenv in base root
+    APP_ROOT = os.path.dirname(__file__)  # refers to application_top
+    dotenv_path = os.path.join(APP_ROOT, ".flaskenv")
+    load_dotenv(dotenv_path)
+
     # import routes to register them
     with app.app_context():
         import knowledge_app.api.routes
+        from knowledge_app.db.db import client
     return app

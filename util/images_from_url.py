@@ -23,12 +23,12 @@ def get_screenshot(url: str):
 
 
 def get_images(
-        url: str,
-        desired_aspect_ratio: float = 16 / 9,
-        min_width: float = 0,
-        max_width: float = math.inf,
-        min_height: float = 0,
-        max_height: float = math.inf,
+    url: str,
+    desired_aspect_ratio: float = 16 / 9,
+    min_width: float = 0,
+    max_width: float = math.inf,
+    min_height: float = 0,
+    max_height: float = math.inf,
 ):
     # get and parse html content
     r = requests.get(url)
@@ -40,19 +40,19 @@ def get_images(
         if tag.get("src"):
             # Ensure height and width are given
             if (height := tag.attrs.get("height")) and (
-                    width := tag.attrs.get("width")
+                width := tag.attrs.get("width")
             ):
                 # Ensure height and width are in specified range
                 if (
-                        min_height <= float(height) <= max_height
-                        and min_width <= float(width) <= max_width
+                    min_height <= float(height) <= max_height
+                    and min_width <= float(width) <= max_width
                 ):
                     # Check to see if this aspect ratio is the closest match seen thus far
                     ratio = float(width) / float(height)
                     if closest_ratio:
                         # Is the current aspect ratio closer to the target than the previous best match?
                         if abs(closest_ratio - desired_aspect_ratio) > abs(
-                                ratio - desired_aspect_ratio
+                            ratio - desired_aspect_ratio
                         ):
                             # mark as new best match
                             closest_tag, closest_ratio = tag, ratio
@@ -63,8 +63,8 @@ def get_images(
     if closest_tag:
         stripped_src = closest_tag.get("src").lstrip("/")
         if re.match(
-                r"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)",
-                stripped_src,
+            r"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)",
+            stripped_src,
         ):
             return stripped_src
         else:
@@ -73,28 +73,30 @@ def get_images(
         return None
 
 
-ImageResult = NamedTuple('ImageResult', type=str, img_url=str)
+ImageResult = NamedTuple("ImageResult", type=str, img_url=str)
 
 
 def get_image_or_screenshot(
-        url: str,
-        desired_aspect_ratio: float = 16 / 9,
-        min_width: float = None,
-        max_width: float = None,
-        min_height: float = None,
-        max_height: float = None,
+    url: str,
+    desired_aspect_ratio: float = 16 / 9,
+    min_width: float = None,
+    max_width: float = None,
+    min_height: float = None,
+    max_height: float = None,
 ) -> (Union[Literal["BASE64"], Literal["LINK"]], str):
-    img_url = get_images(url=url,
-                         desired_aspect_ratio=desired_aspect_ratio,
-                         min_width=min_width,
-                         max_width=max_width,
-                         min_height=min_height,
-                         max_height=max_height)
+    img_url = get_images(
+        url=url,
+        desired_aspect_ratio=desired_aspect_ratio,
+        min_width=min_width,
+        max_width=max_width,
+        min_height=min_height,
+        max_height=max_height,
+    )
     if not img_url:
-        return_type = 'BASE64'
+        return_type = "BASE64"
         img_url = get_screenshot(url=url)
     else:
-        return_type = 'LINK'
+        return_type = "LINK"
     return ImageResult(return_type, img_url)
 
 
@@ -113,7 +115,5 @@ if __name__ == "__main__":
     #     "https://google.com",
     #     desired_aspect_ratio=16 / 9
     # )
-    img_result = get_image_or_screenshot(
-        "https://adamschwartz.co/magic-of-css/"
-    )
+    img_result = get_image_or_screenshot("https://adamschwartz.co/magic-of-css/")
     print(img_result)
