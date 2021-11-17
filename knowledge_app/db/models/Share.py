@@ -2,6 +2,9 @@ from ...db.db import db
 
 
 class Share:
+    required_fields = ['title', 'teaser', 'content', 'link']
+    optional_fields = ['imgLink']
+
     @staticmethod
     def get_all():
         """
@@ -11,3 +14,11 @@ class Share:
         cursor = db['shares'].find({})
         shares = [document for document in cursor]
         return shares
+
+    @staticmethod
+    def insert(share_object: dict):
+        """
+        Add the given object
+        """
+        # blindly trusting that whoever called this function already validated the share object
+        db['shares'].insert_one(share_object)

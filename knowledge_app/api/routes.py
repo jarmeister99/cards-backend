@@ -27,11 +27,9 @@ def create_share():
 
     # parse body
     share_object = {}
-    required_fields = ['title', 'teaser', 'content', 'link']
-    optional_fields = ['imgLink']
 
     # ensure we have all required fields
-    for field in required_fields:
+    for field in Share.required_fields:
         if not request_body.get(field):
             # error if missing any
             return {'error': f'request missing \'{field}\''}, 400
@@ -39,10 +37,14 @@ def create_share():
         share_object[field] = request_body.get(field)
 
     # save all optional fields to object
-    for field in optional_fields:
+    for field in Share.optional_fields:
         if request_body.get(field):
             share_object[field] = request_body.get(field)
         else:
             share_object[field] = ''
 
-    return share_object, 200
+    Share.insert(share_object)
+    response = app.response_class(
+        response=json_util.dumps(share_object), mimetype="application/json", status=200
+    )
+    return response
