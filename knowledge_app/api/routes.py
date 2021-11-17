@@ -18,7 +18,7 @@ def get_shares():
     return response
 
 
-@app.route("/api/shares", methods=["POST"])
+@app.route("/api/shares/", methods=["POST"])
 def create_share():
     """
     Add the given share to the database and return the created share
