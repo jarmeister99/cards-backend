@@ -31,7 +31,10 @@ def get_images(
     max_height: float = math.inf,
 ):
     # get and parse html content
-    r = requests.get(url)
+    try:
+        r = requests.get(url)
+    except requests.exceptions.MissingSchema:  # give up very easily
+        return None
     soup = bs4.BeautifulSoup(r.content, "html.parser")
     closest_tag, closest_ratio = None, None
 
