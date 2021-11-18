@@ -5,6 +5,8 @@ from bson import json_util
 from knowledge_app.db.models.Share import Share
 from util.images_from_url import get_images
 
+import time
+
 
 @app.route("/api/shares/", methods=["GET"])
 def get_shares():
@@ -13,14 +15,10 @@ def get_shares():
     """
 
     shares = Share.get_all()
-    for share in shares:
-        if not share.get('img_url'):
-            img = get_images(url=share.get('link'), min_height=100, min_width=100)
-            if img:
-                share['img_url'] = img
     response = app.response_class(
         response=json_util.dumps(shares), mimetype="application/json", status=200
     )
+
     return response
 
 
@@ -48,6 +46,12 @@ def create_share():
             share_object[field] = request_body.get(field)
         else:
             share_object[field] = ''
+
+    # look for image on link
+    if not share_object.get('img_url'):
+        img = get_images(url=share_object.get('link'), min_height=100, min_width=100)
+        if img:
+            share_object['img_url'] = img
 
     Share.insert(share_object)
     response = app.response_class(
