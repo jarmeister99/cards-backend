@@ -99,21 +99,3 @@ def get_image_or_screenshot(
         return_type = "LINK"
     return ImageResult(return_type, img_url)
 
-
-if __name__ == "__main__":
-    # foo = get_images(
-    #     "https://www.loveandlemons.com/baked-potato/",
-    #     desired_aspect_ratio=16 / 9,
-    #     min_width=100,
-    # )
-    # bar = get_images(
-    #     "https://en.wikipedia.org/wiki/Foobar",
-    #     desired_aspect_ratio=16 / 9,
-    #     min_width=100,
-    # )
-    # baz = get_images(
-    #     "https://google.com",
-    #     desired_aspect_ratio=16 / 9
-    # )
-    img_result = get_image_or_screenshot("https://adamschwartz.co/magic-of-css/")
-    print(img_result)
