@@ -3,7 +3,7 @@ from ...db.db import db
 
 class Share:
     required_fields = ['title', 'teaser', 'content', 'link']
-    optional_fields = ['img_url']
+    optional_fields = ['img_url', 'tags']
 
     @staticmethod
     def get_all():
