@@ -13,6 +13,12 @@ class Share:
         """
         cursor = db['shares'].find({})
         shares = [document for document in cursor]
+        for share in shares:
+            if not share.get('img_url'):
+                # hardcoded img_urls
+                # TODO: replace with regex
+                if 'youtube' in share.get('link'):
+                    share['img_url'] = 'https://share.jaredfoster.dev/images/youtube.png'
         return shares
 
     @staticmethod
