@@ -1,3 +1,5 @@
+import pymongo
+
 from ...db.db import db
 
 
@@ -11,7 +13,7 @@ class Share:
         Get all shares from the database
         TODO: paginate
         """
-        cursor = db['shares'].find({})
+        cursor = db['shares'].find({}).sort("_id", pymongo.DESCENDING)
         shares = [document for document in cursor]
         for share in shares:
             if not share.get('img_url'):
