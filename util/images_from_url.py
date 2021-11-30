@@ -31,7 +31,10 @@ def get_images(
     max_height: float = math.inf,
 ):
     # get and parse html content
-    r = requests.get(url)
+    try:
+        r = requests.get(url)
+    except requests.exceptions.MissingSchema:  # give up very easily
+        return None
     soup = bs4.BeautifulSoup(r.content, "html.parser")
     closest_tag, closest_ratio = None, None
 
@@ -62,13 +65,7 @@ def get_images(
 
     if closest_tag:
         stripped_src = closest_tag.get("src").lstrip("/")
-        if re.match(
-            r"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)",
-            stripped_src,
-        ):
-            return stripped_src
-        else:
-            return f"{url}{stripped_src}"
+        return stripped_src
     else:
         return None
 
