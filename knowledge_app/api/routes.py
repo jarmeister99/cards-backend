@@ -5,9 +5,6 @@ from bson import json_util
 from knowledge_app.db.models.Share import Share
 from util.images_from_url import get_images
 
-import time
-
-
 @app.route("/api/shares/", methods=["GET"])
 def get_shares():
     """
@@ -24,8 +21,11 @@ def get_shares():
 
 @app.route("/api/shares/<share_id>", methods=["DELETE"])
 def delete_share(share_id: str):
-    print(f'Attempting to delete {share_id}')
-    return 200
+    success = Share.delete(share_id=share_id)
+    if success:
+        return {}, 200
+    else:
+        return {}, 404
 
 
 @app.route("/api/shares/", methods=["POST"])

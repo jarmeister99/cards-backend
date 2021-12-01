@@ -1,4 +1,5 @@
 import pymongo
+from bson import ObjectId
 
 from ...db.db import db
 
@@ -33,4 +34,8 @@ class Share:
 
     @staticmethod
     def delete(share_id: str):
-        print(share_id)
+        """
+        Delete a document with the given ID and return whether a document was deleted
+        """
+        delete_result = db['shares'].delete_one({'_id': ObjectId(share_id)})
+        return delete_result.deleted_count > 0
