@@ -22,6 +22,12 @@ def get_shares():
     return response
 
 
+@app.route("/api/shares/<share_id>", methods=["DELETE"])
+def delete_share(share_id: str):
+    print(f'Attempting to delete {share_id}')
+    return 200
+
+
 @app.route("/api/shares/", methods=["POST"])
 def create_share():
     """

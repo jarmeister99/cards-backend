@@ -30,3 +30,7 @@ class Share:
         """
         # blindly trusting that whoever called this function already validated the share object
         db['shares'].insert_one(share_object)
+
+    @staticmethod
+    def delete(share_id: str):
+        print(share_id)
